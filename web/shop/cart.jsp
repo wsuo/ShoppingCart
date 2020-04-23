@@ -20,6 +20,13 @@
             height: 300px;
         }
     </style>
+    <script>
+        function confirmDel(param) {
+            if (window.confirm("您确定要删除这件美丽的商品吗？")) {
+                document.location = "deleteItem?id=" + param;
+            }
+        }
+    </script>
 </head>
 <body>
 <a href="./productList.jsp">📄 商品列表</a>
@@ -40,7 +47,10 @@
                     <td><span style="color: darkorange">${cart.key.price}</span>💰</td>
                     <td><span style="color: darkorange">${cart.key.price * cart.value}</span>💰</td>
                     <c:if test="${sessionScope.cart.size() >= 2}">
-                        <td><a href="deleteItem?id=${cart.key.id}">删除💨</a></td>
+                        <td>
+<%--                            <a href="deleteItem?id=${cart.key.id}">删除💨</a>--%>
+                            <input type="button" value="删除" onclick="confirmDel(${cart.key.id})">
+                        </td>
                     </c:if>
                 </tr>
                 <c:set var="total" value="${cart.value * cart.key.price + total}"/>

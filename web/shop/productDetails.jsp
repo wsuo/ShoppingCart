@@ -21,6 +21,16 @@
             border-radius: 20px;
         }
     </style>
+    <script>
+        test = function () {
+            var quality = document.getElementById("quality");
+            var reg = /^[0-9]*$/;
+            if (!reg.test(quality.value)) {
+                alert("请输入数字");
+            }
+        };
+
+    </script>
 </head>
 <body>
 <form action="addCart" method="post">
@@ -50,7 +60,8 @@
         <tr>
             <td>
                 <label>
-                    <input type="text" name="quality">
+                    <input type="text" name="quality" id="quality" onkeypress="test()">
+<%--                    <input type="text" name="" oninput="value=value.replace(/[^\d]/g,'')">--%>
                 </label>
             </td>
             <td>
