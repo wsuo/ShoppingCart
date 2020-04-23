@@ -10,6 +10,11 @@
 <html>
 <head>
     <title>商品列表</title>
+    <style>
+        li {
+            color: cornflowerblue;
+        }
+    </style>
 </head>
 <body>
 <p>🍓商品列表</p>

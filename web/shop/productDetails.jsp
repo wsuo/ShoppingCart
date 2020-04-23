@@ -10,15 +10,28 @@
 <head>
     <title>商品详情</title>
     <style>
+        * {
+            padding: 0;
+            margin: 0;
+        }
+
         td {
             text-align: center;
         }
 
         table {
-            width: 300px;
-            height: 150px;
+            width: 600px;
+            height: 300px;
             border: 2px cornflowerblue;
-            border-radius: 20px;
+            color: darkorange;
+        }
+
+        #quality {
+            width: 50px;
+            height: 60px;
+            border-radius: 10px;
+            border: cornflowerblue;
+            font-size: 28px;
         }
     </style>
     <script>
@@ -29,7 +42,6 @@
                 alert("请输入数字");
             }
         };
-
     </script>
 </head>
 <body>
@@ -38,8 +50,8 @@
     <table border="2px">
         <tbody>
         <tr>
-            <th>属性</th>
-            <th>值</th>
+            <th></th>
+            <th></th>
         </tr>
         <tr>
             <td>ID</td>
