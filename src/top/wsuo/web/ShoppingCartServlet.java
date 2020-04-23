@@ -21,7 +21,8 @@ import java.util.Map;
         "/shop/products",
         "/shop/details",
         "/shop/addCart",
-        "/shop/deleteItem"
+        "/shop/deleteItem",
+        "/shop/clearCart"
 }, loadOnStartup = 1)
 public class ShoppingCartServlet extends HttpServlet {
 
@@ -68,6 +69,19 @@ public class ShoppingCartServlet extends HttpServlet {
         else if (uri.endsWith("details")) displayGoods(request, response);
         else if (uri.endsWith("addCart")) addCart(request, response);
         else if (uri.endsWith("deleteItem")) deleteCard(request, response);
+        else if (uri.endsWith("clearCart")) clearCart(request, response);
+    }
+
+    /**
+     * 清空购物车
+     * 响应请求: /shop/clearCart
+     *
+     * @param request
+     * @param response
+     */
+    private void clearCart(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        request.getSession().removeAttribute("cart");
+        response.sendRedirect("./cart.jsp");
     }
 
     /**
