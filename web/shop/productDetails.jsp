@@ -24,7 +24,7 @@
     <script>
         test = function () {
             var quality = document.getElementById("quality");
-            var reg = /^[0-9]*$/;
+            var reg = /^[0-9]*$/g;
             if (!reg.test(quality.value)) {
                 alert("请输入数字");
             }
@@ -60,7 +60,7 @@
         <tr>
             <td>
                 <label>
-                    <input type="text" name="quality" id="quality" onkeypress="test()">
+                    <input type="text" name="quality" id="quality" onkeyup="test()">
 <%--                    <input type="text" name="" oninput="value=value.replace(/[^\d]/g,'')">--%>
                 </label>
             </td>
