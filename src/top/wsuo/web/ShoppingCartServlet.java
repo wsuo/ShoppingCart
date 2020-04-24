@@ -1,5 +1,9 @@
 package top.wsuo.web;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 import top.wsuo.pojo.Product;
 
 import javax.servlet.ServletConfig;
@@ -12,6 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -23,10 +28,13 @@ import java.util.Map;
                 "/shop/details",
                 "/shop/addCart",
                 "/shop/deleteItem",
-                "/shop/clearCart"},
+                "/shop/clearCart",
+                "/shop/search"},
         loadOnStartup = 1)
 public class ShoppingCartServlet extends HttpServlet {
 
+    private static int count = 0;
+//    private static ServletConfig config;
     /**
      * 数据的初始化
      *
@@ -37,23 +45,24 @@ public class ShoppingCartServlet extends HttpServlet {
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
         // 装载数据
-        Product p1 = new Product
-                (1, "单反相机", "最没有性价比的单反相机", 3306f);
-        Product p2 = new Product
-                (2, "双反相机", "最不值的双反相机", 3307f);
-        Product p3 = new Product
-                (3, "三反相机", "最难看的三反相机", 3308f);
-        Product p4 = new Product
-                (4, "四反相机", "最花里胡哨的四反相机", 3309f);
-        List<Product> list = new ArrayList<>();
-        list.add(p1);
-        list.add(p2);
-        list.add(p3);
-        list.add(p4);
+//        Product p1 = new Product
+//                (1, "单反相机", "最没有性价比的单反相机", 3306f);
+//        Product p2 = new Product
+//                (2, "双反相机", "最不值的双反相机", 3307f);
+//        Product p3 = new Product
+//                (3, "三反相机", "最难看的三反相机", 3308f);
+//        Product p4 = new Product
+//                (4, "四反相机", "最花里胡哨的四反相机", 3309f);
+//        List<Product> list = new ArrayList<>();
+//        list.add(p1);
+//        list.add(p2);
+//        list.add(p3);
+//        list.add(p4);
         // 保存到应用作用域中
-        config
-                .getServletContext()
-                .setAttribute("products", list);
+//        config
+//                .getServletContext()
+//                .setAttribute("products", list);
+        initProduct("java");
     }
 
     /**
@@ -71,14 +80,15 @@ public class ShoppingCartServlet extends HttpServlet {
         else if (uri.endsWith("addCart")) addCart(request, response);
         else if (uri.endsWith("deleteItem")) deleteCard(request, response);
         else if (uri.endsWith("clearCart")) clearCart(request, response);
+        else if (uri.endsWith("search")) doSearch(request, response);
     }
 
     /**
      * 清空购物车
      * 响应请求: /shop/clearCart
      *
-     * @param request
-     * @param response
+     * @param request  请求对象
+     * @param response 响应对象
      */
     private void clearCart(HttpServletRequest request, HttpServletResponse response) throws IOException {
         request.getSession().removeAttribute("cart");
@@ -165,7 +175,7 @@ public class ShoppingCartServlet extends HttpServlet {
      * 删除商品
      * /shop/deleteItem
      *
-     * @param request 请求
+     * @param request  请求
      * @param response 响应
      */
     private void deleteCard(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -195,5 +205,46 @@ public class ShoppingCartServlet extends HttpServlet {
             }
         }
         return null;
+    }
+
+    private void initProduct(String keyWords) {
+        String url = "https://search.jd.com/Search?keyword=" + keyWords + "&enc=utf-8";
+        List<Product> list = new ArrayList<>();
+        try {
+            Document parse = Jsoup.parse(new URL(url), 30000);
+            Element element = parse.getElementById("J_goodsList");
+            Elements li = element.getElementsByTag("li");
+            for (Element el : li) {
+                count++;
+                String img = el.getElementsByTag("img").eq(0).attr("source-data-lazy-img");
+                String price = el.getElementsByClass("p-price").eq(0).text();
+                String title = el.getElementsByClass("p-name").eq(0).text();
+                Product product =
+                        new Product(count, title, img, Float.valueOf(price.split("￥")[1]));
+                list.add(product);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        this
+                .getServletContext()
+                .setAttribute("products", list);
+    }
+
+    /**
+     * 搜索功能
+     * /shop/search
+     *
+     */
+    private void doSearch(
+            HttpServletRequest request,
+            HttpServletResponse response) throws IOException {
+        String keyWords = request.getParameter("keyword");
+        System.out.println("数据初始化");
+        this.getServletContext().removeAttribute("products");
+        initProduct(keyWords);
+        System.out.println("转发到商品首页");
+        displayProducts(request, response);
     }
 }

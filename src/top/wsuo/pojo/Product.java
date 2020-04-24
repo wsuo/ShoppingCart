@@ -10,17 +10,17 @@ package top.wsuo.pojo;
 public class Product {
     private Integer id;
     private String name;
-    private String description;
+    private String img;
     private Float price;
 
     public Product(Integer id) {
         this.id = id;
     }
 
-    public Product(Integer id, String name, String description, Float price) {
+    public Product(Integer id, String name, String img, Float price) {
         this.id = id;
         this.name = name;
-        this.description = description;
+        this.img = img;
         this.price = price;
     }
 
@@ -40,12 +40,12 @@ public class Product {
         this.name = name;
     }
 
-    public String getDescription() {
-        return description;
+    public String getImg() {
+        return img;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setImg(String img) {
+        this.img = img;
     }
 
     public Float getPrice() {

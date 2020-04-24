@@ -33,6 +33,8 @@
             border: cornflowerblue;
             font-size: 28px;
         }
+
+
     </style>
     <script>
         test = function () {
@@ -62,8 +64,8 @@
             <td>${requestScope.product.name}</td>
         </tr>
         <tr>
-            <td>商品说明</td>
-            <td>${requestScope.product.description}</td>
+            <td>商品图片</td>
+            <td><img src="${requestScope.product.img}"></td>
         </tr>
         <tr>
             <td>商品价格</td>
