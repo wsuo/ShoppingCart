@@ -241,10 +241,10 @@ public class ShoppingCartServlet extends HttpServlet {
             HttpServletRequest request,
             HttpServletResponse response) throws IOException {
         String keyWords = request.getParameter("keyword");
-        System.out.println("数据初始化");
+//        System.out.println("数据初始化");
 //        this.getServletContext().removeAttribute("products");
         initProduct(keyWords);
-        System.out.println("转发到商品首页");
+//        System.out.println("转发到商品首页");
         displayProducts(request, response);
     }
 }
